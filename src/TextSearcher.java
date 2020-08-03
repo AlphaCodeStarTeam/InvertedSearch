@@ -2,7 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class TextSearcher {
-    private HashMap<String, HashMap<String, Integer>> invertedMap;
+    private HashMap<String, HashSet<String>> invertedMap;
 
     public TextSearcher() {
         this.invertedMap = new HashMap<>();
@@ -37,23 +37,18 @@ public class TextSearcher {
     private void addKeyToMap(String key, String docID) {
 
         if(invertedMap.containsKey(key)) {
-            HashMap<String, Integer> keyHashMap = invertedMap.get(key);
-
-            if(keyHashMap.containsKey(docID)) {
-                keyHashMap.replace(docID, keyHashMap.get(docID) + 1);
-            } else {
-                keyHashMap.put(docID, 1);
-            }
-
+            invertedMap.get(key).add(docID);
         } else {
-            HashMap<String, Integer> keyHashMap = new HashMap<>();
-            keyHashMap.put(docID, 1);
-            invertedMap.put(key, keyHashMap);
+            HashSet<String> docIDs = new HashSet<>();
+            docIDs.add(docID);
+            invertedMap.put(key, docIDs);
         }
 
     }
 
-    public HashMap<String, Integer> getDocIDs(String key) {
-        return invertedMap.containsKey(key) ? invertedMap.get(key) : new HashMap<>();
+    public HashSet<String> getDocIDs(String key) {
+        return invertedMap.containsKey(key) ? invertedMap.get(key) : new HashSet<>();
     }
+
+
 }
