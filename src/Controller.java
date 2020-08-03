@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -6,7 +7,7 @@ public class Controller {
     private final Scanner scanner;
     private TextSearcher textSearcher;
     private HashSet<String> norms, poss, negs, resultSet;
-    private HashMap<String, Integer> docIDToRep;
+
     public Controller() {
         this.scanner = new Scanner(System.in);
         textSearcher = new TextSearcher();
@@ -21,6 +22,7 @@ public class Controller {
             norms = new HashSet<>();
             poss = new HashSet<>();
             negs = new HashSet<>();
+            resultSet = new HashSet<>();
 
             for (String word : splitInput) {
                 char starter = word.charAt(0);
@@ -37,7 +39,7 @@ public class Controller {
                 }
 
             }
-            modifyResultForNorms();
+            modifyResultForNorm();
             modifyResultForPoss();
             modifyResultForNegs();
 
@@ -47,19 +49,19 @@ public class Controller {
         }
     }
 
-    private void modifyResultForNorms() {
-        resultSet = new HashSet<>();
-        docIDToRep = new HashMap<>();
+    private void modifyResultForNorm() {
         for (String norm : norms) {
-            for (String docID : textSearcher.getDocIDs(norm)) {
-                docIDToRep.put(docID, (docIDToRep.containsKey(docID) ? (docIDToRep.get(docID) + 1) : 1));
-            }
+            resultSet.addAll(textSearcher.getDocIDs(norm));
         }
-        for (String docID : docIDToRep.keySet()) {
-            if(docIDToRep.get(docID) == norms.size()) {
-                resultSet.add(docID);
-            }
+
+        HashSet<String> hashSetPrim = new HashSet<>();
+        for (String norm : norms) {
+            HashSet<String> hashSet = new HashSet<>(resultSet);
+            hashSet.removeAll(textSearcher.getDocIDs(norm));
+            hashSetPrim.addAll(hashSet);
         }
+
+        resultSet.removeAll(hashSetPrim);
     }
 
     private void modifyResultForPoss() {

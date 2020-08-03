@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileReader {
-    private static final String DOC_FOLDER_PATH = "Temp\\";
+    private static final String DOC_FOLDER_PATH = "EnglishData\\";
 
     public static Scanner getFileScanner(String fileName) throws FileNotFoundException {
         return new Scanner(new File(DOC_FOLDER_PATH + fileName));
