@@ -3,11 +3,9 @@ import java.util.*;
 
 public class TextSearcher {
     private HashMap<String, HashMap<String, Integer>> invertedMap;
-    private List<String> docIDs;
 
     public TextSearcher() {
         this.invertedMap = new HashMap<>();
-        this.docIDs = new ArrayList<>();
     }
 
     public void initMap() {
@@ -26,7 +24,8 @@ public class TextSearcher {
             Scanner scanner = FileReader.getFileScanner(docID);
 
             while (scanner.hasNext()) {
-                addKeyToMap(scanner.next().toLowerCase(), docID);
+                String word = scanner.next();
+                addKeyToMap(word.toLowerCase(), docID);
             }
 
         } catch (FileNotFoundException e) {
@@ -36,9 +35,6 @@ public class TextSearcher {
     }
 
     private void addKeyToMap(String key, String docID) {
-        if(docID.equals("Doc1.txt")) {
-            System.err.println("Key : \"" + key + "\"");
-        }
 
         if(invertedMap.containsKey(key)) {
             HashMap<String, Integer> keyHashMap = invertedMap.get(key);
