@@ -1,13 +1,12 @@
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
     private final Scanner scanner;
     private TextSearcher textSearcher;
     private HashSet<String> norms, poss, negs, resultSet;
-
+    private HashMap<String, Integer> docIDToRep;
     public Controller() {
         this.scanner = new Scanner(System.in);
         textSearcher = new TextSearcher();
@@ -38,7 +37,6 @@ public class Controller {
                 }
 
             }
-
             modifyResultForNorms();
             modifyResultForPoss();
             modifyResultForNegs();
@@ -50,38 +48,18 @@ public class Controller {
     }
 
     private void modifyResultForNorms() {
+        resultSet = new HashSet<>();
+        docIDToRep = new HashMap<>();
         for (String norm : norms) {
-            HashSet<String> hashSet = textSearcher.getDocIDs(norm);
-            if(hashSet.isEmpty()) {
-                resultSet = new HashSet<>();
-                return;
-            }
-
-            if (resultSet == null) {
-                resultSet = hashSet;
-            } else {
-                resultSet = andToResultSet(hashSet);
-
-                if (resultSet.isEmpty()) {
-                    return;
-                }
-            }
-
-        }
-    }
-
-    private HashSet<String> andToResultSet(HashSet<String> hashSet) {
-        HashSet<String> andSet = new HashSet<>();
-        boolean delimiter = hashSet.size() > resultSet.size();
-        HashSet<String> biggerSet = delimiter ? hashSet : resultSet, smallerSet = delimiter ? resultSet : hashSet;
-
-        for (String docID : smallerSet) {
-            if(biggerSet.contains(docID)) {
-                andSet.add(docID);
+            for (String docID : textSearcher.getDocIDs(norm)) {
+                docIDToRep.put(docID, (docIDToRep.containsKey(docID) ? (docIDToRep.get(docID) + 1) : 1));
             }
         }
-
-        return andSet;
+        for (String docID : docIDToRep.keySet()) {
+            if(docIDToRep.get(docID) == norms.size()) {
+                resultSet.add(docID);
+            }
+        }
     }
 
     private void modifyResultForPoss() {

@@ -50,5 +50,4 @@ public class TextSearcher {
         return invertedMap.containsKey(key) ? invertedMap.get(key) : new HashSet<>();
     }
 
-
 }
