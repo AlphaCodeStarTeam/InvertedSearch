@@ -54,6 +54,11 @@ public class Controller {
         }
     }
 
+    /**
+     * This Function Is For Manipulating Results For Normal Inputs,
+     * The Keys That Have Neither '+' Nor '-' From Their Beginning.
+     * It Uses A High Performance Algorithm To Intersect The DocSets Of Inputs
+     */
     private void modifyResultForNorms() {
         for (String norm : container.getNorms()) {
             container.getResultSet().addAll(textSearcher.getDocIDs(norm));
@@ -62,21 +67,33 @@ public class Controller {
     }
 
     private HashSet<String> getAndPrimedSet() {
-        HashSet<String> hashSetPrim = new HashSet<>();
+        HashSet<String> hashSetPrime = new HashSet<>();
         for (String norm : container.getNorms()) {
+            //Getting The Union Of Keys ResultSets
             HashSet<String> hashSet = new HashSet<>(container.getResultSet());
+            //Removing This Key ResultSet From The Union
             hashSet.removeAll(textSearcher.getDocIDs(norm));
-            hashSetPrim.addAll(hashSet);
+            //Adding The Subtraction Set Above To The Prime Set
+            hashSetPrime.addAll(hashSet);
         }
-        return hashSetPrim;
+        //Returning The DocIDs Which Doesn't Include All Norms In Whole
+        return hashSetPrime;
     }
 
+    /**
+     * This Function Is For Manipulating Results For Positive Inputs,
+     * The Keys That Have '+' From Their Beginning.
+     */
     private void modifyResultForPoss() {
         for (String word : container.getPoss()) {
             container.getResultSet().addAll(textSearcher.getDocIDs(word));
         }
     }
 
+    /**
+     * This Function Is For Manipulating Results For Negative Inputs,
+     * The Keys That Have '-' From Their Beginning.
+     */
     private void modifyResultForNegs() {
         for (String word : container.getNegs()) {
             container.getResultSet().removeAll(textSearcher.getDocIDs(word));
