@@ -1,6 +1,7 @@
-package processor;
+package vc.controller;
 
 import invertedmap.TextSearcher;
+import vc.SearchQuery;
 
 import java.util.HashSet;
 import java.util.Scanner;
@@ -11,47 +12,36 @@ import java.util.Scanner;
  *
  * @author  Sepehr Kianian
  * @author  Ashkan Khademian
- * @see     SearchContainer
+ * @see     SearchQuery
  * @see     TextSearcher
  */
 
-@FunctionalInterface
 interface Modify {
-    void apply();
+    void apply(HashSet<String> resultSet, SearchQuery query);
 }
-
 public class Controller {
     private final Scanner scanner;
     private final TextSearcher textSearcher;
-    private Modify modify;
-    private SearchContainer container;
+    private final Modify modify;
 
     //The Initializer Block Due To Instantiate modify
     {
-        modify = () -> {
-            modifyResultForNorms();
-            modifyResultForPoss();
-            modifyResultForNegs();
+        modify = (resultSet, query) -> {
+            modifyResultForNorms(resultSet, query.getNorms());
+            modifyResultForPoss(resultSet, query.getPoss());
+            modifyResultForNegs(resultSet, query.getNegs());
         };
     }
     public Controller() {
         this.scanner = new Scanner(System.in);
         textSearcher = new TextSearcher();
         textSearcher.initMap();
-        run();
     }
 
-    /*Simple Example Of User Input:
-    * was are +he +limit -is
-    * meaning: must conclude both "was" and "are" or include either "he" or "limit" and must not have any "is"
-    * */
-    private void run() {
-        while (true) {
-            System.out.println("Please Enter Your Word : ");
-            container = new SearchContainer(this.scanner);
-            modify.apply();
-            System.out.println("Results : " + container.getResultSet().toString());
-        }
+    public HashSet<String> executeQuery(SearchQuery query) {
+        HashSet<String> resultSet = new HashSet<>();
+        modify.apply(resultSet, query);
+        return resultSet;
     }
 
     /**
@@ -59,18 +49,18 @@ public class Controller {
      * The Keys That Have Neither '+' Nor '-' From Their Beginning.
      * It Uses A High Performance Algorithm To Intersect The DocSets Of Inputs
      */
-    private void modifyResultForNorms() {
-        for (String norm : container.getNorms()) {
-            container.getResultSet().addAll(textSearcher.getDocIDs(norm));
+    private void modifyResultForNorms(HashSet<String> resultSet, HashSet<String> norms) {
+        for (String norm : norms) {
+            resultSet.addAll(textSearcher.getDocIDs(norm));
         }
-        container.getResultSet().removeAll(getAndPrimedSet());
+        resultSet.removeAll(getAndPrimedSet(resultSet, norms));
     }
 
-    private HashSet<String> getAndPrimedSet() {
+    private HashSet<String> getAndPrimedSet(HashSet<String> resultSet, HashSet<String> norms) {
         HashSet<String> hashSetPrime = new HashSet<>();
-        for (String norm : container.getNorms()) {
+        for (String norm : norms) {
             //Getting The Union Of Keys ResultSets
-            HashSet<String> hashSet = new HashSet<>(container.getResultSet());
+            HashSet<String> hashSet = new HashSet<>(resultSet);
             //Removing This Key ResultSet From The Union
             hashSet.removeAll(textSearcher.getDocIDs(norm));
             //Adding The Subtraction Set Above To The Prime Set
@@ -84,9 +74,9 @@ public class Controller {
      * This Function Is For Manipulating Results For Positive Inputs,
      * The Keys That Have '+' From Their Beginning.
      */
-    private void modifyResultForPoss() {
-        for (String word : container.getPoss()) {
-            container.getResultSet().addAll(textSearcher.getDocIDs(word));
+    private void modifyResultForPoss(HashSet<String> resultSet, HashSet<String> poss) {
+        for (String word : poss) {
+            resultSet.addAll(textSearcher.getDocIDs(word));
         }
     }
 
@@ -94,9 +84,10 @@ public class Controller {
      * This Function Is For Manipulating Results For Negative Inputs,
      * The Keys That Have '-' From Their Beginning.
      */
-    private void modifyResultForNegs() {
-        for (String word : container.getNegs()) {
-            container.getResultSet().removeAll(textSearcher.getDocIDs(word));
+    private void modifyResultForNegs(HashSet<String> resultSet, HashSet<String> negs) {
+        for (String word : negs) {
+            resultSet.removeAll(textSearcher.getDocIDs(word));
         }
     }
+
 }

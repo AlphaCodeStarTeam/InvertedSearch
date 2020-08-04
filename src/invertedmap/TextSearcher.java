@@ -39,6 +39,7 @@ public class TextSearcher {
                 String word = scanner.next();
                 addKeyToMap(word.toLowerCase(), docID);
             }
+            scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,8 @@
-import processor.Controller;
+import vc.controller.Controller;
+import vc.view.AlphaSearcher;
 
 public class Main {
     public static void main(String[] args) {
-        new Controller();
+        new AlphaSearcher().run();
     }
 }
