@@ -8,16 +8,16 @@ import java.util.regex.Pattern;
 
 public class AlphaSearcher extends Application {
     private static final String appName = "Alpha-Searcher", version = "2.0";
-    private static final String GOODBYE_MESSAGE = "Goodbye";
+    private static final String GOODBYE_MESSAGE = "Goodbye From " + appName + " Team";
 
     public AlphaSearcher() {
-        super(appName, version);
+        super(appName, version, GOODBYE_MESSAGE);
     }
 
     @Override
     public void initExecutors() {
-        executers.put("^search( \\S+)+$", this::search);
-        executers.put("^view (\\S+)$", this::viewDoc);
+        executerComponent.put("^search( \\S+)+$", this::search);
+        executerComponent.put("^view (\\S+)$", this::viewDoc);
     }
 
     private void viewDoc(String... strings) {
@@ -34,11 +34,7 @@ public class AlphaSearcher extends Application {
     public void run() {
         while (true) {
             System.out.print(appName + "> ");
-            try {
-                findExecutor(getUserInput());
-            } catch (ExitException e) {
-                System.out.println(GOODBYE_MESSAGE);
-            }
+            executerComponent.findExecutor(getUserInput());
         }
     }
 

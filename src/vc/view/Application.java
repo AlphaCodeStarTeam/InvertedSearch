@@ -2,25 +2,21 @@ package vc.view;
 
 import vc.controller.Controller;
 import vc.SearchQuery;
+import vc.view.utils.ExecuteComponent;
 
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-interface Executer {
-    void execute(String... inputs);
-}
 
 public abstract class Application {
     private String appName, version;
     Function<String[], SearchQuery> parser;
     protected Controller controller = new Controller();
     protected Scanner scanner = new Scanner(System.in);
-    protected HashMap<String, Executer> executers;
+    protected ExecuteComponent executerComponent = new ExecuteComponent();
 
-    public Application(String appName, String version) {
+    public Application(String appName, String version, String goodByeMessage) {
         parser = (String[] strings) -> {
           SearchQuery query = new SearchQuery();
           parseInput(strings, query);
@@ -28,11 +24,16 @@ public abstract class Application {
         };
         this.appName = appName;
         this.version = version;
-        executers = new HashMap<>();
-        executers.put("help", (String... strings) -> showHelp());
-        executers.put("exit", (String... strings) -> exit());
+        executerComponent.put("help", (String... strings) -> showHelp());
+        executerComponent.put("exit", (String... strings) -> exit());
         initExecutors();
         sayWelcome();
+
+        try {
+            run();
+        } catch (ExitException e) {
+            System.out.println(goodByeMessage);
+        }
     }
 
     public abstract void initExecutors();
@@ -43,31 +44,6 @@ public abstract class Application {
 
     protected String getUserInput() {
         return scanner.nextLine().trim();
-    }
-
-    protected void findExecutor(String input) {
-        for (String commandRegex : executers.keySet()) {
-            Matcher matcher = getMatcher(commandRegex, input);
-            if(matcher.matches()) {
-                executers.get(commandRegex).execute(getMatcherGroupsAsArray(matcher));
-                return;
-            }
-        }
-
-        System.err.println("Invalid Command");
-    }
-
-    protected String[] getMatcherGroupsAsArray(Matcher matcher) {
-        String[] strings = new String[matcher.groupCount()];
-        for (int i = 0; i < matcher.groupCount(); i++) {
-            strings[i] = matcher.group(i);
-        }
-        return strings;
-    }
-
-    protected Matcher getMatcher(String regex, String command) {
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(command);
     }
 
     private void sayWelcome() {
