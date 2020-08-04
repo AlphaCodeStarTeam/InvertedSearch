@@ -1,4 +1,3 @@
-import vc.controller.Controller;
 import vc.view.AlphaSearcher;
 
 public class Main {

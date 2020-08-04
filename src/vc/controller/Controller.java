@@ -90,4 +90,7 @@ public class Controller {
         }
     }
 
+    public String getDoc(String docID) {
+        return textSearcher.getDoc(docID);
+    }
 }

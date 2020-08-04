@@ -15,7 +15,7 @@ import java.util.Scanner;
  * @see     TextSearcher
  */
 public class FileReader {
-    private static final String DOC_FOLDER_PATH = "Documents\\";
+    private static final String DOC_FOLDER_PATH = "EnglishData\\";
 
     public static Scanner getFileScanner(String fileName) throws FileNotFoundException {
         return new Scanner(new File(DOC_FOLDER_PATH + fileName));

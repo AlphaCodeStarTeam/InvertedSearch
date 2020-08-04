@@ -45,6 +45,20 @@ public class TextSearcher {
         }
     }
 
+    public String getDoc(String docID) {
+        try {
+            StringBuilder docContextBuilder = new StringBuilder("");
+            Scanner scanner = FileReader.getFileScanner(docID);
+            while (scanner.hasNextLine()) {
+                docContextBuilder.append(scanner.nextLine()).append("\n");
+            }
+            scanner.close();
+            return docContextBuilder.toString();
+        } catch (FileNotFoundException e) {
+            return "DocID Is Not Valid";
+        }
+    }
+
     //Gets Two Parameters, Keyword And Its DocID And Save It Inside The Map
     private void addKeyToMap(String key, String docID) {
 

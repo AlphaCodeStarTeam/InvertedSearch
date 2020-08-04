@@ -3,26 +3,49 @@ package vc.view;
 import vc.SearchQuery;
 
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AlphaSearcher extends Application {
     private static final String appName = "Alpha-Searcher", version = "2.0";
+    private static final String GOODBYE_MESSAGE = "Goodbye";
 
     public AlphaSearcher() {
         super(appName, version);
     }
 
     @Override
+    public void initExecutors() {
+        executers.put("^search( \\S+)+$", this::search);
+        executers.put("^view (\\S+)$", this::viewDoc);
+    }
+
+    private void viewDoc(String... strings) {
+        String context = controller.getDoc(strings[0]);
+        System.out.println("Context : " + context);
+    }
+
+    private void search(String[] strings) {
+        HashSet<String> resultSet = controller.executeQuery(parser.apply(strings));
+        System.out.println("Result: " + resultSet);
+    }
+
+    @Override
     public void run() {
         while (true) {
             System.out.print(appName + "> ");
-            HashSet<String> resultSet = controller.executeQuery(parser.apply(getUserInput()));
-            System.out.println("Result: " + resultSet);
+            try {
+                findExecutor(getUserInput());
+            } catch (ExitException e) {
+                System.out.println(GOODBYE_MESSAGE);
+            }
         }
     }
 
     @Override
-    public void parseInput(String input, SearchQuery query) {
-        for (String word : input.split(" ")) {
+    public void parseInput(String[] inputs, SearchQuery query) {
+        for (String word : inputs) {
+            word = word.trim();
             char starter = word.charAt(0);
             switch (starter) {
                 case '+':
@@ -39,6 +62,10 @@ public class AlphaSearcher extends Application {
 
     @Override
     public void showHelp() {
-
+        System.out.println("Commands :");
+        System.out.println("\tsearch $context (#all)");
+        System.out.println("\tview $DocID");
+        System.out.println("\thelp");
+        System.out.println("\texit");
     }
 }
