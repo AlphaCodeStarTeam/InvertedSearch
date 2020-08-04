@@ -13,7 +13,7 @@ public class TextSearcher {
             for (String docID : FileReader.getDocIDs()) {
                 addDocToMap(docID);
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             System.err.println("File Documents Are Interrupted");
             e.printStackTrace();
         }
@@ -22,16 +22,13 @@ public class TextSearcher {
     private void addDocToMap(String docID) {
         try {
             Scanner scanner = FileReader.getFileScanner(docID);
-
             while (scanner.hasNext()) {
                 String word = scanner.next();
                 addKeyToMap(word.toLowerCase(), docID);
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     private void addKeyToMap(String key, String docID) {
