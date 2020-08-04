@@ -1,13 +1,11 @@
 package processor;
 
-import invertedmap.TextSearcher;
-
 import java.util.HashSet;
 import java.util.Scanner;
 
 /**
  * This Class Is For Getting And Holding User Inputs And The Results
- * InputGetter Interface Helps Getting User Inputs
+ * InputGetter Interface Is Due To Getting User Inputs
  *
  * @author  Sepehr Kianian
  * @author  Ashkan Khademian
