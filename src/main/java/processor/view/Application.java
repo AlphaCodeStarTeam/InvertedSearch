@@ -39,13 +39,12 @@ public abstract class Application {
         this.printer = printer;
         executeComponent.put("help", (String... strings) -> showHelp());
         executeComponent.put("exit", (String... strings) -> exit());
-        start();
     }
 
     /**
      * Application Starts At This Point
      */
-    private void start() {
+    public void start() {
         initExecutors();
         sayWelcome();
         try {

@@ -52,7 +52,12 @@ public class AlphaSearcher extends Application {
     public void run() {
         while (true) {
             System.out.print(appName + "> ");
-            executeComponent.findExecutor(getUserInput());
+            if (!scanner.hasNextLine()) {
+                break;
+            }
+            String input = getUserInput();
+            System.out.println(input);
+            executeComponent.findExecutor(input);
         }
     }
 
