@@ -7,6 +7,15 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 
+/**
+ * AlphaSearcher Uses A Simple Language Due To Interacting With User.
+ * You Can Enter Help To See Language Guidance.
+ *
+ * @author  Sepehr Kianian
+ * @author  Ashkan Khademian
+ * @see     Application
+ */
+
 public class AlphaSearcher extends Application {
     private static final String appName = "Alpha-Searcher", version = "2.0";
     private static final String GOODBYE_MESSAGE = "Goodbye From " + appName + " Team";
@@ -56,6 +65,10 @@ public class AlphaSearcher extends Application {
         System.out.println("\texit");
     }
 
+    /**
+     * This Function Is Used To View Context Inside A Doc.
+     * @param strings
+     */
     private void viewDoc(String[] strings) {
         try {
             String context = controller.getDoc(strings[0]);
@@ -65,6 +78,10 @@ public class AlphaSearcher extends Application {
         }
     }
 
+    /**
+     * This Function Is Used To Show Search Result Which Is Got From Controller.
+     * @param strings
+     */
     private void search(String[] strings) {
         boolean isAll = strings[strings.length - 1].trim().equals("#all");
         if(isAll) {

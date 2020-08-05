@@ -8,6 +8,16 @@ import processor.view.utils.PrettyPrinter;
 import java.util.Scanner;
 import java.util.function.Function;
 
+/**
+ * Application Class Provides A CMD UI.
+ *
+ * @author  Sepehr Kianian
+ * @author  Ashkan Khademian
+ * @see     Controller
+ * @see     SearchQuery
+ * @see     ExecuteComponent
+ */
+
 public abstract class Application {
     protected Function<String[], SearchQuery> parser;
     protected Controller controller = new Controller();
@@ -32,6 +42,9 @@ public abstract class Application {
         start();
     }
 
+    /**
+     * Application Starts At This Point
+     */
     private void start() {
         initExecutors();
         sayWelcome();
@@ -51,12 +64,21 @@ public abstract class Application {
         return scanner.nextLine().trim();
     }
 
+    /**
+     * @throws ExitException
+     */
     public void exit() throws ExitException {
         throw new ExitException();
     }
 
     public static class ExitException extends RuntimeException {}
 
+    /**
+     * This Method Is For Taking Search Input And Creating SearchQuery From It.
+     *
+     * @param inputs
+     * @param query
+     */
     public abstract void parseInput(String[] inputs, SearchQuery query);
 
     public abstract void initExecutors();
