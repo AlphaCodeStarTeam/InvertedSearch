@@ -1,9 +1,9 @@
-package vc.view;
+package processor.view;
 
-import vc.controller.Controller;
-import vc.SearchQuery;
-import vc.view.utils.ExecuteComponent;
-import vc.view.utils.PrettyPrinter;
+import processor.controller.Controller;
+import processor.SearchQuery;
+import processor.view.utils.ExecuteComponent;
+import processor.view.utils.PrettyPrinter;
 
 import java.util.Scanner;
 import java.util.function.Function;

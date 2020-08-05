@@ -1,4 +1,4 @@
-import vc.view.AlphaSearcher;
+import processor.view.AlphaSearcher;
 
 public class Main {
     public static void main(String[] args) {

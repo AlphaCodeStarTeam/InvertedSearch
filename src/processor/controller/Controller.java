@@ -1,7 +1,7 @@
-package vc.controller;
+package processor.controller;
 
-import vc.controller.invertedmap.TextSearcher;
-import vc.SearchQuery;
+import processor.controller.invertedmap.TextSearcher;
+import processor.SearchQuery;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;

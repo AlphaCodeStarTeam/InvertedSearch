@@ -1,7 +1,7 @@
-package vc.view;
+package processor.view;
 
-import vc.SearchQuery;
-import vc.view.utils.AlphaPrinter;
+import processor.SearchQuery;
+import processor.view.utils.AlphaPrinter;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;

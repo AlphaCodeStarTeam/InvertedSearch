@@ -1,6 +1,6 @@
 package model;
 
-import vc.controller.invertedmap.TextSearcher;
+import processor.controller.invertedmap.TextSearcher;
 
 import java.io.File;
 import java.io.FileNotFoundException;

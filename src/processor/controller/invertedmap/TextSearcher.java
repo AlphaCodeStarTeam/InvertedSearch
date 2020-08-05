@@ -1,4 +1,4 @@
-package vc.controller.invertedmap;
+package processor.controller.invertedmap;
 
 import model.FileReader;
 
