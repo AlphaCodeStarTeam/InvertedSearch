@@ -7,12 +7,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExecuteComponent {
-    private HashMap<String, Executer> executers;
+    private HashMap<String, Executer> executors;
 
     private Function<String, String[]> inputToGroupArray;
 
     public ExecuteComponent() {
-        executers = new HashMap<>();
+        executors = new HashMap<>();
         inputToGroupArray = (String input) -> {
             String[] strings = input.split(" ");
             return strings.length == 1 ? strings : Arrays.copyOfRange(strings, 1, strings.length);
@@ -20,14 +20,14 @@ public class ExecuteComponent {
     }
 
     public void put(String regex, Executer executer) {
-        executers.put(regex, executer);
+        executors.put(regex, executer);
     }
 
     public void findExecutor(String input) {
-        for (String commandRegex : executers.keySet()) {
+        for (String commandRegex : executors.keySet()) {
             Matcher matcher = getMatcher(commandRegex, input);
             if(matcher.matches()) {
-                executers.get(commandRegex).execute(inputToGroupArray.apply(input));
+                executors.get(commandRegex).execute(inputToGroupArray.apply(input));
                 return;
             }
         }

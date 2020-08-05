@@ -3,8 +3,6 @@ package vc.view;
 import vc.SearchQuery;
 
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AlphaSearcher extends Application {
     private static final String appName = "Alpha-Searcher", version = "2.0";
@@ -12,30 +10,6 @@ public class AlphaSearcher extends Application {
 
     public AlphaSearcher() {
         super(appName, version, GOODBYE_MESSAGE);
-    }
-
-    @Override
-    public void initExecutors() {
-        executerComponent.put("^search( \\S+)+$", this::search);
-        executerComponent.put("^view (\\S+)$", this::viewDoc);
-    }
-
-    private void viewDoc(String... strings) {
-        String context = controller.getDoc(strings[0]);
-        System.out.println("Context : " + context);
-    }
-
-    private void search(String[] strings) {
-        HashSet<String> resultSet = controller.executeQuery(parser.apply(strings));
-        System.out.println("Result: " + resultSet);
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            System.out.print(appName + "> ");
-            executerComponent.findExecutor(getUserInput());
-        }
     }
 
     @Override
@@ -57,11 +31,35 @@ public class AlphaSearcher extends Application {
     }
 
     @Override
+    public void initExecutors() {
+        executeComponent.put("^search( \\S+)+$", this::search);
+        executeComponent.put("^view (\\S+)$", this::viewDoc);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            System.out.print(appName + "> ");
+            executeComponent.findExecutor(getUserInput());
+        }
+    }
+
+    @Override
     public void showHelp() {
         System.out.println("Commands :");
         System.out.println("\tsearch $context (#all)");
         System.out.println("\tview $DocID");
         System.out.println("\thelp");
         System.out.println("\texit");
+    }
+
+    private void viewDoc(String[] strings) {
+        String context = controller.getDoc(strings[0]);
+        System.out.println("Context : " + context);
+    }
+
+    private void search(String[] strings) {
+        HashSet<String> resultSet = controller.executeQuery(parser.apply(strings));
+        System.out.println("Result: " + resultSet);
     }
 }

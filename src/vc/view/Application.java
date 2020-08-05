@@ -6,15 +6,14 @@ import vc.view.utils.ExecuteComponent;
 
 import java.util.Scanner;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class Application {
-    private String appName, version;
-    Function<String[], SearchQuery> parser;
+    protected Function<String[], SearchQuery> parser;
     protected Controller controller = new Controller();
     protected Scanner scanner = new Scanner(System.in);
-    protected ExecuteComponent executerComponent = new ExecuteComponent();
+    protected ExecuteComponent executeComponent = new ExecuteComponent();
+    private String appName, version;
+    private String goodByeMessage;
 
     public Application(String appName, String version, String goodByeMessage) {
         parser = (String[] strings) -> {
@@ -24,11 +23,15 @@ public abstract class Application {
         };
         this.appName = appName;
         this.version = version;
-        executerComponent.put("help", (String... strings) -> showHelp());
-        executerComponent.put("exit", (String... strings) -> exit());
+        this.goodByeMessage = goodByeMessage;
+        executeComponent.put("help", (String... strings) -> showHelp());
+        executeComponent.put("exit", (String... strings) -> exit());
+        start();
+    }
+
+    private void start() {
         initExecutors();
         sayWelcome();
-
         try {
             run();
         } catch (ExitException e) {
@@ -36,33 +39,26 @@ public abstract class Application {
         }
     }
 
-    public abstract void initExecutors();
-
-    public abstract void run();
-
-    public abstract void parseInput(String[] inputs, SearchQuery query);
-
-    protected String getUserInput() {
-        return scanner.nextLine().trim();
-    }
-
     private void sayWelcome() {
         System.out.println("Welcome To " + appName + ". v" + version);
         System.out.println("Please Enter \"help\" To See The CommandList\n");
     }
 
-    public abstract void showHelp();
+    protected String getUserInput() {
+        return scanner.nextLine().trim();
+    }
 
     public void exit() throws ExitException {
         throw new ExitException();
     }
 
-    public static class ExitException extends RuntimeException {
-        public ExitException() {
-        }
+    public static class ExitException extends RuntimeException {}
 
-        public ExitException(String message) {
-            super(message);
-        }
-    }
+    public abstract void parseInput(String[] inputs, SearchQuery query);
+
+    public abstract void initExecutors();
+
+    public abstract void run();
+
+    public abstract void showHelp();
 }
