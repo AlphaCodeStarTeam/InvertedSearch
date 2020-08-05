@@ -1,6 +1,18 @@
 package processor.view.utils;
 
+import processor.SearchQuery;
+import processor.controller.invertedmap.TextSearcher;
+
 import java.util.List;
+
+/**
+ * This Class Which Is Used By AlphaSearcher Constructs Alpha Outputs.
+ *
+ * @author  Sepehr Kianian
+ * @author  Ashkan Khademian
+ * @see     PrettyPrinter
+ * @see     processor.view.AlphaSearcher
+ */
 
 public class AlphaPrinter extends PrettyPrinter {
     @Override

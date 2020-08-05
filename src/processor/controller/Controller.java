@@ -5,6 +5,7 @@ import processor.SearchQuery;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -90,6 +91,13 @@ public class Controller {
         }
     }
 
+    /**
+     * This Method Gets Doc Context By Its Doc ID.
+     *
+     * @param docID
+     * @return
+     * @throws FileNotFoundException
+     */
     public String getDoc(String docID) throws FileNotFoundException {
         return textSearcher.getDoc(docID);
     }

@@ -1,10 +1,22 @@
 package processor.view.utils;
 
+import processor.SearchQuery;
+import processor.controller.invertedmap.TextSearcher;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+/**
+ * This Class Is A Component Of An Application's Executing Methods Which Uses Java Functional Programming.
+ *
+ * @author  Sepehr Kianian
+ * @author  Ashkan Khademian
+ * @see     Executer
+ * @see     FunctionalInterface
+ */
 
 public class ExecuteComponent {
     private HashMap<String, Executer> executors;
@@ -23,6 +35,11 @@ public class ExecuteComponent {
         executors.put(regex, executer);
     }
 
+    /**
+     * This Method Gets Input Taken From User And Executes The Related Method.
+     *
+     * @param input
+     */
     public void findExecutor(String input) {
         for (String commandRegex : executors.keySet()) {
             Matcher matcher = getMatcher(commandRegex, input);
