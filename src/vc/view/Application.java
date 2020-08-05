@@ -3,6 +3,7 @@ package vc.view;
 import vc.controller.Controller;
 import vc.SearchQuery;
 import vc.view.utils.ExecuteComponent;
+import vc.view.utils.PrettyPrinter;
 
 import java.util.Scanner;
 import java.util.function.Function;
@@ -12,10 +13,11 @@ public abstract class Application {
     protected Controller controller = new Controller();
     protected Scanner scanner = new Scanner(System.in);
     protected ExecuteComponent executeComponent = new ExecuteComponent();
+    protected PrettyPrinter printer;
     private String appName, version;
     private String goodByeMessage;
 
-    public Application(String appName, String version, String goodByeMessage) {
+    public Application(String appName, String version, String goodByeMessage, PrettyPrinter printer) {
         parser = (String[] strings) -> {
           SearchQuery query = new SearchQuery();
           parseInput(strings, query);
@@ -24,6 +26,7 @@ public abstract class Application {
         this.appName = appName;
         this.version = version;
         this.goodByeMessage = goodByeMessage;
+        this.printer = printer;
         executeComponent.put("help", (String... strings) -> showHelp());
         executeComponent.put("exit", (String... strings) -> exit());
         start();

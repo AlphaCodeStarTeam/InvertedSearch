@@ -1,4 +1,6 @@
-package invertedmap;
+package vc.controller.invertedmap;
+
+import model.FileReader;
 
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -17,10 +19,11 @@ public class TextSearcher {
 
     public TextSearcher() {
         this.invertedMap = new HashMap<>();
+        initMap();
     }
 
     //This Method Gets DocIDs From Model And Uses Another Function To Save Its Words
-    public void initMap() {
+    private void initMap() {
         try {
             for (String docID : FileReader.getDocIDs()) {
                 addDocToMap(docID);
@@ -45,18 +48,14 @@ public class TextSearcher {
         }
     }
 
-    public String getDoc(String docID) {
-        try {
-            StringBuilder docContextBuilder = new StringBuilder("");
-            Scanner scanner = FileReader.getFileScanner(docID);
-            while (scanner.hasNextLine()) {
-                docContextBuilder.append(scanner.nextLine()).append("\n");
-            }
-            scanner.close();
-            return docContextBuilder.toString();
-        } catch (FileNotFoundException e) {
-            return "DocID Is Not Valid";
+    public String getDoc(String docID) throws FileNotFoundException {
+        StringBuilder docContextBuilder = new StringBuilder("");
+        Scanner scanner = FileReader.getFileScanner(docID);
+        while (scanner.hasNextLine()) {
+            docContextBuilder.append(scanner.nextLine()).append("\n");
         }
+        scanner.close();
+        return docContextBuilder.toString();
     }
 
     //Gets Two Parameters, Keyword And Its DocID And Save It Inside The Map

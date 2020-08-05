@@ -1,7 +1,10 @@
 package vc.view;
 
 import vc.SearchQuery;
+import vc.view.utils.AlphaPrinter;
 
+import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class AlphaSearcher extends Application {
@@ -9,13 +12,13 @@ public class AlphaSearcher extends Application {
     private static final String GOODBYE_MESSAGE = "Goodbye From " + appName + " Team";
 
     public AlphaSearcher() {
-        super(appName, version, GOODBYE_MESSAGE);
+        super(appName, version, GOODBYE_MESSAGE, new AlphaPrinter());
     }
 
     @Override
     public void parseInput(String[] inputs, SearchQuery query) {
         for (String word : inputs) {
-            word = word.trim();
+            word = word.trim().toLowerCase();
             char starter = word.charAt(0);
             switch (starter) {
                 case '+':
@@ -33,7 +36,7 @@ public class AlphaSearcher extends Application {
     @Override
     public void initExecutors() {
         executeComponent.put("^search( \\S+)+$", this::search);
-        executeComponent.put("^view (\\S+)$", this::viewDoc);
+        executeComponent.put("^view (\\S+)( #all)?$", this::viewDoc);
     }
 
     @Override
@@ -48,18 +51,31 @@ public class AlphaSearcher extends Application {
     public void showHelp() {
         System.out.println("Commands :");
         System.out.println("\tsearch $context (#all)");
-        System.out.println("\tview $DocID");
+        System.out.println("\tview $DocID (#all)");
         System.out.println("\thelp");
         System.out.println("\texit");
     }
 
     private void viewDoc(String[] strings) {
-        String context = controller.getDoc(strings[0]);
-        System.out.println("Context : " + context);
+        try {
+            String context = controller.getDoc(strings[0]);
+            System.out.println(strings.length != 1 ? printer.printContext("Doc(" + strings[0] + ")", context) : printer.printModifiedWords("Doc(" + strings[0] + ")", context, 10));
+        } catch (FileNotFoundException e) {
+            System.out.println("DocID Is Not Valid!");
+        }
     }
 
     private void search(String[] strings) {
-        HashSet<String> resultSet = controller.executeQuery(parser.apply(strings));
-        System.out.println("Result: " + resultSet);
+        boolean isAll = strings[strings.length - 1].trim().equals("#all");
+        if(isAll) {
+            strings = Arrays.copyOfRange(strings, 0, strings.length - 1);
+        }
+        SearchQuery query = parser.apply(strings);
+        HashSet<String> resultSet = controller.executeQuery(query);
+        String header = "Your Search Includes: \n" +
+                "Must Include Words: " + query.getNorms() + "\n" +
+                "Include Words: " + query.getPoss() + "\n" +
+                "Exclude Words: " + query.getNegs();
+        System.out.println(printer.printModifiedLines(header, Arrays.asList(resultSet.toArray(new String[0])), isAll ? resultSet.size() : 3));
     }
 }

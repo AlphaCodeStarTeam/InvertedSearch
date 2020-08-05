@@ -1,9 +1,10 @@
-package invertedmap;
+package model;
+
+import vc.controller.invertedmap.TextSearcher;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 

@@ -1,8 +1,9 @@
 package vc.controller;
 
-import invertedmap.TextSearcher;
+import vc.controller.invertedmap.TextSearcher;
 import vc.SearchQuery;
 
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -35,7 +36,6 @@ public class Controller {
     public Controller() {
         this.scanner = new Scanner(System.in);
         textSearcher = new TextSearcher();
-        textSearcher.initMap();
     }
 
     public HashSet<String> executeQuery(SearchQuery query) {
@@ -90,7 +90,7 @@ public class Controller {
         }
     }
 
-    public String getDoc(String docID) {
+    public String getDoc(String docID) throws FileNotFoundException {
         return textSearcher.getDoc(docID);
     }
 }
