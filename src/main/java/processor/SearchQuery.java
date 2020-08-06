@@ -1,6 +1,8 @@
 package processor;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This Class Is For Getting And Holding User Inputs And The Results
@@ -38,15 +40,15 @@ public class SearchQuery {
         return negs;
     }
 
-    public void addPos(String pos) {
-        poss.add(pos);
+    public void addPoss(String... poss) {
+        this.poss.addAll(Arrays.asList(poss));
     }
 
-    public void addNeg(String neg) {
-        negs.add(neg);
+    public void addNegs(String... negs) {
+        this.negs.addAll(Arrays.asList(negs));
     }
 
-    public void addNorm(String norm) {
-        norms.add(norm);
+    public void addNorms(String... norms) {
+        this.norms.addAll(Arrays.asList(norms));
     }
 }

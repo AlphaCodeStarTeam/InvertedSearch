@@ -31,13 +31,13 @@ public class AlphaSearcher extends Application {
             char starter = word.charAt(0);
             switch (starter) {
                 case '+':
-                    query.addPos(word.substring(1));
+                    query.addPoss(word.substring(1));
                     break;
                 case '-':
-                    query.addNeg(word.substring(1));
+                    query.addNegs(word.substring(1));
                     break;
                 default:
-                    query.addNorm(word);
+                    query.addNorms(word);
             }
         }
     }

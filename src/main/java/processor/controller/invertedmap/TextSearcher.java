@@ -30,7 +30,6 @@ public class TextSearcher {
             }
         } catch (NullPointerException e) {
             System.err.println("File Documents Are Interrupted");
-            e.printStackTrace();
         }
     }
 
@@ -44,7 +43,7 @@ public class TextSearcher {
             }
             scanner.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("File Documents Are Interrupted");
         }
     }
 
