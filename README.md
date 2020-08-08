@@ -24,3 +24,6 @@ The project contains of 11 java classes and There Is A **Documents** Folder Wher
 - MVC Design Pattern Was Completed In This Phase.
 
 ### Phase Three
+- Adding Apache Maven framework.
+- Unit testing with jupiter junit.
+- Reaching 63% code coverage.
