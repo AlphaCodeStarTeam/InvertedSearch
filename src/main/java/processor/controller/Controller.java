@@ -4,6 +4,7 @@ import processor.controller.invertedmap.TextSearcher;
 import processor.SearchQuery;
 
 import java.io.FileNotFoundException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -40,8 +41,10 @@ public class Controller {
     }
 
     public HashSet<String> executeQuery(SearchQuery query) {
+        long start = System.currentTimeMillis();
         HashSet<String> resultSet = new HashSet<>();
         modify.apply(resultSet, query);
+        System.out.println("delay for logic: " + Long.toString(System.currentTimeMillis() - start) + "millis");
         return resultSet;
     }
 

@@ -55,9 +55,7 @@ public class AlphaSearcher extends Application {
             if (!scanner.hasNextLine()) {
                 break;
             }
-            String input = getUserInput();
-            System.out.println(input);
-            executeComponent.findExecutor(input);
+            executeComponent.findExecutor(getUserInput());
         }
     }
 
